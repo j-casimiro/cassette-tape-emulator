@@ -24,9 +24,9 @@ You can click these links to play/download the raw audio files directly in your 
 *   🔊 **[Original (Before)](https://github.com/j-casimiro/cassette-tape-emulator/raw/main/samples/original/dont-stop-til-you-get-enough.wav)**
 *   📼 **[Cassette Emulation (After)](https://github.com/j-casimiro/cassette-tape-emulator/raw/main/samples/emulated/dont-stop-til-you-get-enough_cassette.wav)**
 
-#### 3. Rock With You
-*   🔊 **[Original (Before)](https://github.com/j-casimiro/cassette-tape-emulator/raw/main/samples/original/rock-with-you.wav)**
-*   📼 **[Cassette Emulation (After)](https://github.com/j-casimiro/cassette-tape-emulator/raw/main/samples/emulated/rock-with-you_cassette.wav)**
+#### 3. Baby Come Back
+*   🔊 **[Original (Before)](https://github.com/j-casimiro/cassette-tape-emulator/raw/main/samples/original/baby-come-back.wav)**
+*   📼 **[Cassette Emulation (After)](https://github.com/j-casimiro/cassette-tape-emulator/raw/main/samples/emulated/baby-come-back_cassette.wav)**
 
 ## Setup
 

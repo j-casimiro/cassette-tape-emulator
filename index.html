@@ -25,7 +25,7 @@
 
     <main class="container">
         <section class="description">
-            <p>A web companion for the Python cassette tape emulator. Listen to pre-rendered A/B comparison samples below, or upload your own audio file to emulate a physical tape deck in real-time.</p>
+            <p>A web companion for the Python cassette tape emulator. Listen to pre-rendered A/B comparison samples below.</p>
         </section>
 
         <!-- Pre-rendered Samples Section -->
@@ -71,97 +71,24 @@
                 <!-- Track 3 -->
                 <div class="sample-item">
                     <div class="sample-info">
-                        <h3>Rock With You</h3>
-                        <p class="sample-artist">Michael Jackson</p>
+                        <h3>Baby Come Back</h3>
+                        <p class="sample-artist">Player</p>
                     </div>
                     <div class="players">
                         <div class="player">
                             <span class="player-label">Original (Hi-Fi)</span>
-                            <audio src="samples/original/rock-with-you.wav" controls></audio>
+                            <audio src="samples/original/baby-come-back.wav" controls></audio>
                         </div>
                         <div class="player">
                             <span class="player-label">Cassette Emulation</span>
-                            <audio src="samples/emulated/rock-with-you_cassette.wav" controls></audio>
+                            <audio src="samples/emulated/baby-come-back_cassette.wav" controls></audio>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Live Web DSP Deck Section -->
-        <section class="card">
-            <h2 class="card-title">Real-time Web Emulator</h2>
-            <div class="emulator-grid">
-                
-                <!-- Left panel: File input & Audio player state -->
-                <div class="emulator-left">
-                    <div class="drop-zone" id="drop-zone">
-                        <input type="file" id="file-input" accept="audio/*">
-                        <div class="drop-zone-content">
-                            <span class="upload-icon">↑</span>
-                            <p id="upload-label">Choose an audio file or drag it here</p>
-                        </div>
-                    </div>
-                    
-                    <div class="player-controls">
-                        <button id="dsp-play" class="btn btn-primary" disabled>Play Emulator</button>
-                        <button id="dsp-stop" class="btn btn-secondary" disabled>Stop</button>
-                    </div>
-                </div>
 
-                <!-- Right panel: DSP controls and presets -->
-                <div class="emulator-right">
-                    <div class="preset-selector">
-                        <span class="label">Preset:</span>
-                        <div class="preset-buttons">
-                            <button class="btn btn-preset active" data-preset="vintage">Vintage</button>
-                            <button class="btn btn-preset" data-preset="lofi">Lofi</button>
-                            <button class="btn btn-preset" data-preset="hifi">Hi-Fi</button>
-                            <button class="btn btn-preset" data-preset="custom">Custom</button>
-                        </div>
-                    </div>
-
-                    <div class="sliders">
-                        <!-- Saturation Drive -->
-                        <div class="slider-item">
-                            <div class="slider-meta">
-                                <label for="param-drive">Saturation Drive</label>
-                                <span class="val" id="val-drive">2.0x</span>
-                            </div>
-                            <input type="range" id="param-drive" min="1.0" max="4.0" step="0.1" value="2.0">
-                        </div>
-
-                        <!-- Wow & Flutter -->
-                        <div class="slider-item">
-                            <div class="slider-meta">
-                                <label for="param-wow">Wow & Flutter</label>
-                                <span class="val" id="val-wow">0.0004</span>
-                            </div>
-                            <input type="range" id="param-wow" min="0" max="0.002" step="0.0001" value="0.0004">
-                        </div>
-
-                        <!-- Tape Hiss Level -->
-                        <div class="slider-item">
-                            <div class="slider-meta">
-                                <label for="param-hiss">Tape Hiss Level</label>
-                                <span class="val" id="val-hiss">0.006</span>
-                            </div>
-                            <input type="range" id="param-hiss" min="0" max="0.03" step="0.001" value="0.006">
-                        </div>
-
-                        <!-- High Cutoff -->
-                        <div class="slider-item">
-                            <div class="slider-meta">
-                                <label for="param-roll-off">High-Frequency Roll-off</label>
-                                <span class="val" id="val-roll-off">7500 Hz</span>
-                            </div>
-                            <input type="range" id="param-roll-off" min="1000" max="18000" step="100" value="7500">
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
     </main>
 
     <footer>
@@ -170,6 +97,5 @@
         </div>
     </footer>
 
-    <script src="app.js"></script>
 </body>
 </html>
