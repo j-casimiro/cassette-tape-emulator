@@ -8,8 +8,11 @@ from scipy.io import wavfile
 PRESETS = {
     'hifi': {
         'high_shelf_freq': 12000.0,
-        'high_shelf_db': -3.0,
-        'low_cut_hz': 40.0,
+        'high_shelf_db': -2.0,
+        'low_cut_hz': 35.0,
+        'high_cut_hz': 15000.0,
+        'treble_boost_freq': 10000.0,
+        'treble_boost_gain': 1.5,
         'drive': 1.3,
         'threshold': 0.65,
         'wow_depth': 0.00015,
@@ -23,8 +26,11 @@ PRESETS = {
     },
     'vintage': {
         'high_shelf_freq': 7500.0,
-        'high_shelf_db': -8.0,
+        'high_shelf_db': -6.0,
         'low_cut_hz': 65.0,
+        'high_cut_hz': 8500.0,
+        'treble_boost_freq': 6000.0,
+        'treble_boost_gain': 3.0,
         'drive': 2.0,
         'threshold': 0.5,
         'wow_depth': 0.0004,
@@ -37,9 +43,12 @@ PRESETS = {
         'crosstalk': 0.12,
     },
     'lofi': {
-        'high_shelf_freq': 5000.0,
-        'high_shelf_db': -14.0,
-        'low_cut_hz': 80.0,
+        'high_shelf_freq': 3200.0,
+        'high_shelf_db': -10.0,
+        'low_cut_hz': 150.0,
+        'high_cut_hz': 4000.0,
+        'treble_boost_freq': 3200.0,
+        'treble_boost_gain': 4.5,
         'drive': 3.0,
         'threshold': 0.35,
         'wow_depth': 0.0008,
@@ -78,10 +87,17 @@ def apply_high_shelf_cut(audio_data, sample_rate, shelf_freq, shelf_db):
     return signal.filtfilt(b, a, audio_data, axis=0).astype(np.float32)
 
 def apply_low_cut(audio_data, sample_rate, cutoff_hz):
-    """Steeper low-cut filter to remove modern sub-bass rumble."""
+    """Steeper 4th-order low-cut filter to remove modern sub-bass rumble."""
     nyquist = sample_rate / 2.0
     freq = min(cutoff_hz, nyquist - 1.0)
-    b, a = signal.butter(3, freq, btype='highpass', fs=sample_rate)
+    b, a = signal.butter(4, freq, btype='highpass', fs=sample_rate)
+    return signal.filtfilt(b, a, audio_data, axis=0).astype(np.float32)
+
+def apply_high_cut(audio_data, sample_rate, cutoff_hz):
+    """Sharp 4th-order high-cut filter to remove modern high sizzle and air."""
+    nyquist = sample_rate / 2.0
+    freq = min(cutoff_hz, nyquist - 1.0)
+    b, a = signal.butter(4, freq, btype='lowpass', fs=sample_rate)
     return signal.filtfilt(b, a, audio_data, axis=0).astype(np.float32)
 
 def apply_peaking_eq(audio_data, sample_rate, center_freq, gain_db, Q=1.0):
@@ -369,16 +385,32 @@ def add_tape_hiss(audio_data, sample_rate, hiss_level, speed_envelope=None, hiss
     n_samples = len(audio_data)
     t = np.arange(n_samples, dtype=np.float64)
     
+    # Resolve the path to the hiss file (check direct path, then relative to script directory)
+    actual_hiss_path = None
+    if hiss_file_path is not None:
+        paths_to_try = [
+            hiss_file_path,
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), hiss_file_path)
+        ]
+        for p in paths_to_try:
+            if os.path.exists(p):
+                actual_hiss_path = p
+                break
+                
     # Fallback to generated noise if no file is provided or file doesn't exist
-    if hiss_file_path is None or not os.path.exists(hiss_file_path):
+    if actual_hiss_path is None:
+        if hiss_file_path is not None and hiss_file_path != "assets/my-real-tape-hiss.wav":
+            print(f"Warning: Hiss file '{hiss_file_path}' not found. Falling back to generated noise.")
         custom_hiss = np.random.normal(0, hiss_level, audio_data.shape)
     else:
         # Load the custom hiss file
-        hiss_sr, b_data = wavfile.read(hiss_file_path)
+        hiss_sr, b_data = wavfile.read(actual_hiss_path)
         
         # Convert to float32 normalized
         if b_data.dtype == np.int16:
             b_float = b_data.astype(np.float32) / 32768.0
+        elif b_data.dtype == np.int32:
+            b_float = b_data.astype(np.float32) / 2147483648.0
         else:
             b_float = b_data.astype(np.float32)
             
@@ -452,6 +484,63 @@ def generate_button_click(sample_rate, is_play=True):
         
     return click.astype(np.float32)
 
+def load_start_sound(target_sample_rate, target_channels, start_sound_path="assets/cassette-tape-start.wav"):
+    """Loads, resamples, and formats the cassette-tape-start.wav file."""
+    paths_to_try = [
+        start_sound_path,
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), start_sound_path)
+    ]
+    actual_path = None
+    for p in paths_to_try:
+        if os.path.exists(p):
+            actual_path = p
+            break
+            
+    if actual_path is None:
+        return None
+        
+    try:
+        rate, data = wavfile.read(actual_path)
+        
+        # Convert to float32
+        if data.dtype == np.int16:
+            data_float = data.astype(np.float32) / 32768.0
+        elif data.dtype == np.int32:
+            data_float = data.astype(np.float32) / 2147483648.0
+        else:
+            data_float = data.astype(np.float32)
+            
+        # Match channel counts
+        if target_channels == 1:
+            if data_float.ndim > 1:
+                data_float = np.mean(data_float, axis=1)
+        else:
+            if data_float.ndim == 1:
+                data_float = np.column_stack((data_float, data_float))
+            elif data_float.shape[1] > 2:
+                data_float = data_float[:, :2]
+                
+        # Resample using linear interpolation if rates differ
+        if rate != target_sample_rate:
+            num_samples = int(len(data_float) * target_sample_rate / rate)
+            t_original = np.arange(len(data_float))
+            t_target = np.linspace(0, len(data_float) - 1, num_samples)
+            
+            if data_float.ndim == 1:
+                resampled = np.interp(t_target, t_original, data_float)
+            else:
+                resampled = np.zeros((num_samples, 2), dtype=np.float32)
+                for ch in range(2):
+                    resampled[:, ch] = np.interp(t_target, t_original, data_float[:, ch])
+        else:
+            resampled = data_float
+            
+        return resampled.astype(np.float32)
+        
+    except Exception as e:
+        print(f"Error loading start sound file: {e}. Falling back to synthetic startup sounds.")
+        return None
+
 # --- AUDIO ENGINE ---
 
 def process_file(input_path, params, output_path=None, no_physical=False):
@@ -466,6 +555,12 @@ def process_file(input_path, params, output_path=None, no_physical=False):
         audio_float = data.astype(np.float32)
         
     original_samples = len(audio_float)
+    n_channels = 1 if audio_float.ndim == 1 else audio_float.shape[1]
+    
+    # Load start sound if mechanical effects are enabled
+    start_sound_data = None
+    if not no_physical:
+        start_sound_data = load_start_sound(sample_rate, n_channels)
     
     # Pad the audio with silence for mechanical operations
     if no_physical:
@@ -473,7 +568,10 @@ def process_file(input_path, params, output_path=None, no_physical=False):
         pad_end_samples = 0
         processed = audio_float.copy()
     else:
-        pad_start_samples = int(0.5 * sample_rate)
+        if start_sound_data is not None:
+            pad_start_samples = int(4.0 * sample_rate)
+        else:
+            pad_start_samples = int(0.75 * sample_rate)
         pad_end_samples = int(0.5 * sample_rate)
         
         if audio_float.ndim == 1:
@@ -507,14 +605,16 @@ def process_file(input_path, params, output_path=None, no_physical=False):
         print("Applying mechanical startup and stop glides...")
         processed = apply_tape_speed_profile(processed, sample_rate, pad_start_samples, original_samples)
 
-    # 4. High-frequency roll-off (shelf filter)
-    print("Applying high-frequency roll-off...")
+    # 4. High-frequency roll-off (shelf filter + brickwall high-cut)
+    print("Applying high-frequency roll-off and sharp cuts...")
     processed = apply_high_shelf_cut(processed, sample_rate, params['high_shelf_freq'], params['high_shelf_db'])
+    processed = apply_high_cut(processed, sample_rate, params['high_cut_hz'])
     
-    # 5. Vintage Low End: low-cut + head bump EQ
-    print("Applying vintage bass contour (head bump & low-cut)...")
+    # 5. Vintage Low End: low-cut + head bump EQ + treble/midrange boost EQ
+    print("Applying vintage bass contour and midrange boost...")
     processed = apply_low_cut(processed, sample_rate, params['low_cut_hz'])
     processed = apply_peaking_eq(processed, sample_rate, center_freq=100.0, gain_db=2.5, Q=0.9)
+    processed = apply_peaking_eq(processed, sample_rate, center_freq=params['treble_boost_freq'], gain_db=params['treble_boost_gain'], Q=0.8)
     
     # 6. Dynamic soft-knee tape saturation (headroom)
     print("Applying warm dynamic tape saturation...")
@@ -535,23 +635,31 @@ def process_file(input_path, params, output_path=None, no_physical=False):
 
     # 9. Add gated tape hiss (spindle-modulated)
     print("Adding gated tape hiss...")
-    processed = add_tape_hiss(processed, sample_rate, params['hiss_level'], speed_envelope=speed_envelope)
+    processed = add_tape_hiss(processed, sample_rate, params['hiss_level'], 
+                              speed_envelope=speed_envelope, 
+                              hiss_file_path=params.get('hiss_file'))
 
-    # 10. Add mechanical click button sounds
+    # 10. Add mechanical click button sounds or custom start WAV
     if not no_physical:
-        print("Adding mechanical button play/stop clicks...")
-        play_click = generate_button_click(sample_rate, is_play=True)
-        stop_click = generate_button_click(sample_rate, is_play=False)
-        
-        # Inject play click 150ms in
-        play_idx = int(0.15 * sample_rate)
-        if processed.ndim == 1:
-            processed[play_idx:play_idx+len(play_click)] += play_click
+        if start_sound_data is not None:
+            print("Overlaying physical tape start sound...")
+            mix_len = min(len(start_sound_data), len(processed))
+            if processed.ndim == 1:
+                processed[:mix_len] += start_sound_data[:mix_len]
+            else:
+                processed[:mix_len, :] += start_sound_data[:mix_len, :]
         else:
-            for ch in range(processed.shape[1]):
-                processed[play_idx:play_idx+len(play_click), ch] += play_click
-                
-        # Inject stop click 50ms after the deceleration finishes
+            print("Adding mechanical button play clicks (synthetic)...")
+            play_click = generate_button_click(sample_rate, is_play=True)
+            play_idx = int(0.15 * sample_rate)
+            if processed.ndim == 1:
+                processed[play_idx:play_idx+len(play_click)] += play_click
+            else:
+                for ch in range(processed.shape[1]):
+                    processed[play_idx:play_idx+len(play_click), ch] += play_click
+
+        # Always inject the stop click at the end of the recording
+        stop_click = generate_button_click(sample_rate, is_play=False)
         t3_sec = (pad_start_samples + original_samples) / sample_rate + 0.05
         t4_sec = t3_sec + 0.15
         stop_idx = int((t4_sec + 0.05) * sample_rate)
@@ -602,7 +710,8 @@ Examples:
     parser.add_argument("--dropouts", type=float, help="Dropout rate (events per second)")
     parser.add_argument("--no-physical", action="store_true",
                         help="Skip button clicks, speed glides, and motor hum")
-    parser.add_argument("--hiss-file", help="Path to your custom hiss WAV file")
+    parser.add_argument("--hiss-file", default="assets/my-real-tape-hiss.wav",
+                        help="Path to your custom hiss WAV file (default: assets/my-real-tape-hiss.wav)")
     parser.add_argument("-o", "--output", help="Path to save the processed WAV file (default: input_dir/input_name_cassette.wav)")
     
     args = parser.parse_args()
