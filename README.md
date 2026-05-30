@@ -9,29 +9,29 @@ You can play and compare the original high-fidelity tracks with their boxy casse
 ### 1. The Girl Is Mine
 
 *   **Original (Before)**:  
-    <audio src="file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/the-girl-is-mine.wav" controls></audio>  
-    ([the-girl-is-mine.wav](file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/the-girl-is-mine.wav))
+    <audio src="the-girl-is-mine.wav" controls></audio>  
+    ([the-girl-is-mine.wav](the-girl-is-mine.wav))
 *   **Cassette Emulation (After)**:  
-    <audio src="file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/the-girl-is-mine_cassette.wav" controls></audio>  
-    ([the-girl-is-mine_cassette.wav](file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/the-girl-is-mine_cassette.wav))
+    <audio src="the-girl-is-mine_cassette.wav" controls></audio>  
+    ([the-girl-is-mine_cassette.wav](the-girl-is-mine_cassette.wav))
 
 ### 2. Don't Stop 'Til You Get Enough
 
 *   **Original (Before)**:  
-    <audio src="file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/dont-stop-til-you-get-enough.wav" controls></audio>  
-    ([dont-stop-til-you-get-enough.wav](file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/dont-stop-til-you-get-enough.wav))
+    <audio src="dont-stop-til-you-get-enough.wav" controls></audio>  
+    ([dont-stop-til-you-get-enough.wav](dont-stop-til-you-get-enough.wav))
 *   **Cassette Emulation (After)**:  
-    <audio src="file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/dont-stop-til-you-get-enough_cassette.wav" controls></audio>  
-    ([dont-stop-til-you-get-enough_cassette.wav](file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/dont-stop-til-you-get-enough_cassette.wav))
+    <audio src="dont-stop-til-you-get-enough_cassette.wav" controls></audio>  
+    ([dont-stop-til-you-get-enough_cassette.wav](dont-stop-til-you-get-enough_cassette.wav))
 
 ### 3. Rock With You
 
 *   **Original (Before)**:  
-    <audio src="file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/rock-with-you.wav" controls></audio>  
-    ([rock-with-you.wav](file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/rock-with-you.wav))
+    <audio src="rock-with-you.wav" controls></audio>  
+    ([rock-with-you.wav](rock-with-you.wav))
 *   **Cassette Emulation (After)**:  
-    <audio src="file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/rock-with-you_cassette.wav" controls></audio>  
-    ([rock-with-you_cassette.wav](file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/rock-with-you_cassette.wav))
+    <audio src="rock-with-you_cassette.wav" controls></audio>  
+    ([rock-with-you_cassette.wav](rock-with-you_cassette.wav))
 
 ## Setup
 
