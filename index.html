@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cassette Tape Emulator - Interactive Showcase & Web DSP Deck</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="glow-bg"></div>
+    
+    <header class="app-header">
+        <div class="container header-container">
+            <div class="logo">
+                <span class="logo-icon">📼</span>
+                <h1>Cassette Tape Emulator</h1>
+            </div>
+            <nav class="header-links">
+                <a href="https://github.com/j-casimiro/cassette-tape-emulator" class="btn btn-outline" target="_blank">
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+                    GitHub Repository
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Showcase Section: Pre-rendered audio comparison -->
+        <section class="section showcase-section">
+            <div class="section-title">
+                <h2>Pre-Rendered Audio Comparison</h2>
+                <p>Toggle between the original studio tracks and their cassette emulations. Playback switches seamlessly at the exact same millisecond.</p>
+            </div>
+
+            <!-- Tape Deck Visualizer Card -->
+            <div class="deck-card">
+                <div class="deck-window">
+                    <div class="cassette">
+                        <div class="cassette-label">
+                            <div class="label-top">TDK D90</div>
+                            <div class="label-middle">
+                                <span class="label-side">A</span>
+                                <span class="label-title" id="tape-title">Select a track below</span>
+                            </div>
+                        </div>
+                        <div class="cassette-window">
+                            <div class="reel reel-left" id="reel-l">
+                                <div class="reel-inner"></div>
+                            </div>
+                            <div class="reel-reel-connector"></div>
+                            <div class="reel reel-right" id="reel-r">
+                                <div class="reel-inner"></div>
+                            </div>
+                            <div class="tape-ribbon" id="tape-ribbon"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Control Console -->
+                <div class="deck-controls">
+                    <div class="deck-status">
+                        <div class="vu-meters">
+                            <div class="vu-meter">
+                                <span class="vu-label">L</span>
+                                <div class="vu-bar" id="vu-l">
+                                    <div class="vu-fill"></div>
+                                </div>
+                            </div>
+                            <div class="vu-meter">
+                                <span class="vu-label">R</span>
+                                <div class="vu-bar" id="vu-r">
+                                    <div class="vu-fill"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="counter" id="tape-counter">00:00</div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="deck-btn play-btn" id="deck-play" title="Play">
+                            <svg class="btn-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+                        </button>
+                        <button class="deck-btn pause-btn" id="deck-pause" title="Pause" disabled>
+                            <svg class="btn-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                        </button>
+                        <button class="deck-btn stop-btn" id="deck-stop" title="Stop" disabled>
+                            <svg class="btn-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M6 6h12v12H6z"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- AB Mode Switcher -->
+                    <div class="ab-switcher">
+                        <span class="ab-label">Original (Hi-Fi)</span>
+                        <label class="switch">
+                            <input type="checkbox" id="ab-toggle" disabled>
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="ab-label accent-color">Cassette (Lo-Fi)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Track List -->
+            <div class="track-selector">
+                <div class="track-item active" data-track="girl" data-title="1. The Girl Is Mine" data-original="samples/original/the-girl-is-mine.wav" data-emulated="samples/emulated/the-girl-is-mine_cassette.wav">
+                    <span class="track-index">01</span>
+                    <div class="track-meta">
+                        <h4>The Girl Is Mine</h4>
+                        <p>Michael Jackson & Paul McCartney</p>
+                    </div>
+                    <span class="track-duration">0:30</span>
+                </div>
+                <div class="track-item" data-track="stop" data-title="2. Don't Stop 'Til You Get Enough" data-original="samples/original/dont-stop-til-you-get-enough.wav" data-emulated="samples/emulated/dont-stop-til-you-get-enough_cassette.wav">
+                    <span class="track-index">02</span>
+                    <div class="track-meta">
+                        <h4>Don't Stop 'Til You Get Enough</h4>
+                        <p>Michael Jackson</p>
+                    </div>
+                    <span class="track-duration">0:30</span>
+                </div>
+                <div class="track-item" data-track="rock" data-title="3. Rock With You" data-original="samples/original/rock-with-you.wav" data-emulated="samples/emulated/rock-with-you_cassette.wav">
+                    <span class="track-index">03</span>
+                    <div class="track-meta">
+                        <h4>Rock With You</h4>
+                        <p>Michael Jackson</p>
+                    </div>
+                    <span class="track-duration">0:30</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Web DSP Deck: Process custom files in real-time -->
+        <section class="section live-section">
+            <div class="section-title">
+                <h2>Live Web DSP Tape Deck</h2>
+                <p>Drag and drop your own audio file to emulate a physical tape recorder in real-time using Web Audio API!</p>
+            </div>
+
+            <div class="live-grid">
+                <!-- Left panel: File drop and visualizer -->
+                <div class="live-panel-left">
+                    <div class="drop-zone" id="drop-zone">
+                        <div class="drop-content">
+                            <span class="drop-icon">🎵</span>
+                            <h3>Drag & Drop Audio File</h3>
+                            <p>or click to select (MP3, WAV, M4A, FLAC)</p>
+                            <input type="file" id="file-input" accept="audio/*" class="file-hidden">
+                        </div>
+                        <div class="file-info" id="file-info" style="display: none;">
+                            <span class="file-icon-mini">📄</span>
+                            <span class="file-name" id="selected-file-name">filename.wav</span>
+                            <button class="remove-file-btn" id="remove-file-btn">×</button>
+                        </div>
+                    </div>
+
+                    <div class="dsp-player-controls">
+                        <button class="btn btn-primary" id="dsp-play" disabled>
+                            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+                            Play Processing Deck
+                        </button>
+                        <button class="btn btn-secondary" id="dsp-stop" disabled>
+                            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M6 6h12v12H6z"/></svg>
+                            Stop
+                        </button>
+                    </div>
+
+                    <div class="visualizer-card">
+                        <canvas id="visualizer-canvas"></canvas>
+                        <div class="visualizer-label">DSP Analyzer</div>
+                    </div>
+                </div>
+
+                <!-- Right panel: DSP controls and presets -->
+                <div class="live-panel-right">
+                    <div class="preset-selector-row">
+                        <span class="row-label">Emulation Presets:</span>
+                        <div class="preset-buttons">
+                            <button class="btn btn-preset active" data-preset="vintage">Vintage Tape</button>
+                            <button class="btn btn-preset" data-preset="lofi">Lofi Boombox</button>
+                            <button class="btn btn-preset" data-preset="hifi">Studio Hi-Fi</button>
+                            <button class="btn btn-preset" data-preset="custom">Custom</button>
+                        </div>
+                    </div>
+
+                    <div class="knobs-grid">
+                        <div class="control-card">
+                            <div class="control-header">
+                                <label for="param-drive">Tape Saturation (Drive)</label>
+                                <span class="value-display" id="val-drive">2.0x</span>
+                            </div>
+                            <input type="range" class="range-slider" id="param-drive" min="1.0" max="4.0" step="0.1" value="2.0">
+                            <p class="param-desc">Adds warm odd-harmonic distortion and analog tape compression.</p>
+                        </div>
+
+                        <div class="control-card">
+                            <div class="control-header">
+                                <label for="param-wow">Wow & Flutter (Wobble)</label>
+                                <span class="value-display" id="val-wow">0.0004</span>
+                            </div>
+                            <input type="range" class="range-slider" id="param-wow" min="0" max="0.002" step="0.0001" value="0.0004">
+                            <p class="param-desc">Simulates mechanical belt speed fluctuations (pitch wobble).</p>
+                        </div>
+
+                        <div class="control-card">
+                            <div class="control-header">
+                                <label for="param-hiss">Tape Hiss Level</label>
+                                <span class="value-display" id="val-hiss">0.006</span>
+                            </div>
+                            <input type="range" class="range-slider" id="param-hiss" min="0" max="0.03" step="0.001" value="0.006">
+                            <p class="param-desc">Blends authentic analog tape hiss background noise.</p>
+                        </div>
+
+                        <div class="control-card">
+                            <div class="control-header">
+                                <label for="param-roll-off">High-Frequency Roll-off</label>
+                                <span class="value-display" id="val-roll-off">7500 Hz</span>
+                            </div>
+                            <input type="range" class="range-slider" id="param-roll-off" min="1000" max="18000" step="100" value="7500">
+                            <p class="param-desc">Simulates magnetic oxide limitation (warms up sharp highs).</p>
+                        </div>
+
+                        <div class="control-card">
+                            <div class="control-header">
+                                <label for="param-motor">Motor Hum Level</label>
+                                <span class="value-display" id="val-motor">0.0015</span>
+                            </div>
+                            <input type="range" class="range-slider" id="param-motor" min="0" max="0.01" step="0.0005" value="0.0015">
+                            <p class="param-desc">Injects a 60Hz mechanical capstan motor hum.</p>
+                        </div>
+
+                        <div class="control-card">
+                            <div class="control-header">
+                                <label for="param-bass">Head Bump (100Hz Boost)</label>
+                                <span class="value-display" id="val-bass">+2.5 dB</span>
+                            </div>
+                            <input type="range" class="range-slider" id="param-bass" min="0" max="6.0" step="0.5" value="2.5">
+                            <p class="param-desc">Emulates physical tape head low frequency contour bump.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            <p>Cassette Tape Emulator. Built with Python for script execution & Web Audio API for interactive browser playback.</p>
+            <p class="disclaimer">Disclaimer: Audio samples are used for demonstration purposes only. All music rights belong to their respective owners.</p>
+        </div>
+    </footer>
+
+    <!-- App Logic -->
+    <script src="app.js"></script>
+</body>
+</html>

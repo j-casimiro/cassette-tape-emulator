@@ -4,34 +4,29 @@ A Python script that emulates the sound of vintage cassette tapes. It simulates 
 
 ## Audio Samples
 
-You can play and compare the original high-fidelity tracks with their boxy cassette emulations below.
+> [!NOTE]
+> GitHub sanitizes and disables HTML `<audio>` tags in `README.md` files for security. To play the samples, use the interactive web player or the direct links below.
 
-### 1. The Girl Is Mine
+### 🎛️ Interactive Web Player
+We have built an interactive showcase with a live tape player, spinning cassettes, real-time Hi-Fi/Lo-Fi A/B comparison toggles, and a live audio processing deck.
+👉 **[Open the Live Cassette Player Showcase](https://j-casimiro.github.io/cassette-tape-emulator/)**
 
-*   **Original (Before)**:  
-    <audio src="samples/original/the-girl-is-mine.wav" controls></audio>  
-    ([the-girl-is-mine.wav](samples/original/the-girl-is-mine.wav))
-*   **Cassette Emulation (After)**:  
-    <audio src="samples/emulated/the-girl-is-mine_cassette.wav" controls></audio>  
-    ([the-girl-is-mine_cassette.wav](samples/emulated/the-girl-is-mine_cassette.wav))
+---
 
-### 2. Don't Stop 'Til You Get Enough
+### Direct Audio Links
+You can click these links to play/download the raw audio files directly in your browser:
 
-*   **Original (Before)**:  
-    <audio src="samples/original/dont-stop-til-you-get-enough.wav" controls></audio>  
-    ([dont-stop-til-you-get-enough.wav](samples/original/dont-stop-til-you-get-enough.wav))
-*   **Cassette Emulation (After)**:  
-    <audio src="samples/emulated/dont-stop-til-you-get-enough_cassette.wav" controls></audio>  
-    ([dont-stop-til-you-get-enough_cassette.wav](samples/emulated/dont-stop-til-you-get-enough_cassette.wav))
+#### 1. The Girl Is Mine
+*   🔊 **[Original (Before)](https://github.com/j-casimiro/cassette-tape-emulator/raw/main/samples/original/the-girl-is-mine.wav)**
+*   📼 **[Cassette Emulation (After)](https://github.com/j-casimiro/cassette-tape-emulator/raw/main/samples/emulated/the-girl-is-mine_cassette.wav)**
 
-### 3. Rock With You
+#### 2. Don't Stop 'Til You Get Enough
+*   🔊 **[Original (Before)](https://github.com/j-casimiro/cassette-tape-emulator/raw/main/samples/original/dont-stop-til-you-get-enough.wav)**
+*   📼 **[Cassette Emulation (After)](https://github.com/j-casimiro/cassette-tape-emulator/raw/main/samples/emulated/dont-stop-til-you-get-enough_cassette.wav)**
 
-*   **Original (Before)**:  
-    <audio src="samples/original/rock-with-you.wav" controls></audio>  
-    ([rock-with-you.wav](samples/original/rock-with-you.wav))
-*   **Cassette Emulation (After)**:  
-    <audio src="samples/emulated/rock-with-you_cassette.wav" controls></audio>  
-    ([rock-with-you_cassette.wav](samples/emulated/rock-with-you_cassette.wav))
+#### 3. Rock With You
+*   🔊 **[Original (Before)](https://github.com/j-casimiro/cassette-tape-emulator/raw/main/samples/original/rock-with-you.wav)**
+*   📼 **[Cassette Emulation (After)](https://github.com/j-casimiro/cassette-tape-emulator/raw/main/samples/emulated/rock-with-you_cassette.wav)**
 
 ## Setup
 
