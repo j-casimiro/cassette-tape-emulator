@@ -454,7 +454,7 @@ def generate_button_click(sample_rate, is_play=True):
 
 # --- AUDIO ENGINE ---
 
-def process_file(input_path, params, no_physical=False):
+def process_file(input_path, params, output_path=None, no_physical=False):
     print(f"Reading {input_path}...")
     sample_rate, data = wavfile.read(input_path)
     
@@ -569,9 +569,10 @@ def process_file(input_path, params, no_physical=False):
     processed = np.clip(processed, -1.0, 1.0)
     final_audio = np.int16(processed * 32767.0)
     
-    file_dir, file_name = os.path.split(input_path)
-    name, ext = os.path.splitext(file_name)
-    output_path = os.path.join(file_dir, f"{name}_cassette{ext}")
+    if output_path is None:
+        file_dir, file_name = os.path.split(input_path)
+        name, ext = os.path.splitext(file_name)
+        output_path = os.path.join(file_dir, f"{name}_cassette{ext}")
     
     print(f"Saving to {output_path}...")
     wavfile.write(output_path, sample_rate, final_audio)
@@ -602,6 +603,7 @@ Examples:
     parser.add_argument("--no-physical", action="store_true",
                         help="Skip button clicks, speed glides, and motor hum")
     parser.add_argument("--hiss-file", help="Path to your custom hiss WAV file")
+    parser.add_argument("-o", "--output", help="Path to save the processed WAV file (default: input_dir/input_name_cassette.wav)")
     
     args = parser.parse_args()
     
@@ -624,7 +626,7 @@ Examples:
     if args.dropouts is not None:
         params['dropout_rate'] = args.dropouts
         
-    process_file(args.input_file, params, no_physical=args.no_physical)
+    process_file(args.input_file, params, output_path=args.output, no_physical=args.no_physical)
 
 if __name__ == "__main__":
     main()
