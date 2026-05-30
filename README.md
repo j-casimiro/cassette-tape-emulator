@@ -2,6 +2,37 @@
 
 A Python script that emulates the sound of vintage cassette tapes. It simulates physical tape speed anomalies (wow and flutter), tape saturation, frequency limits, ribbon dropouts, and integrates authentic mechanical deck sounds and tape hiss.
 
+## Audio Samples
+
+You can play and compare the original high-fidelity tracks with their boxy cassette emulations below.
+
+### 1. The Girl Is Mine
+
+*   **Original (Before)**:  
+    <audio src="file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/the-girl-is-mine.wav" controls></audio>  
+    ([the-girl-is-mine.wav](file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/the-girl-is-mine.wav))
+*   **Cassette Emulation (After)**:  
+    <audio src="file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/the-girl-is-mine_cassette.wav" controls></audio>  
+    ([the-girl-is-mine_cassette.wav](file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/the-girl-is-mine_cassette.wav))
+
+### 2. Don't Stop 'Til You Get Enough
+
+*   **Original (Before)**:  
+    <audio src="file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/dont-stop-til-you-get-enough.wav" controls></audio>  
+    ([dont-stop-til-you-get-enough.wav](file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/dont-stop-til-you-get-enough.wav))
+*   **Cassette Emulation (After)**:  
+    <audio src="file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/dont-stop-til-you-get-enough_cassette.wav" controls></audio>  
+    ([dont-stop-til-you-get-enough_cassette.wav](file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/dont-stop-til-you-get-enough_cassette.wav))
+
+### 3. Rock With You
+
+*   **Original (Before)**:  
+    <audio src="file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/rock-with-you.wav" controls></audio>  
+    ([rock-with-you.wav](file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/rock-with-you.wav))
+*   **Cassette Emulation (After)**:  
+    <audio src="file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/rock-with-you_cassette.wav" controls></audio>  
+    ([rock-with-you_cassette.wav](file:///Users/jehu/Documents/Projects/Python/cassette-effect-generator/rock-with-you_cassette.wav))
+
 ## Setup
 
 Ensure you have Python 3 and the required dependencies installed:
@@ -59,3 +90,8 @@ python main.py <your-file>.wav --preset lofi --hiss 0.010 --drive 3.5 --wow 0.00
 ```bash
 python main.py <your-file>.wav --preset hifi --hiss 0.002 --drive 1.3 --wow 0.0001 --flutter 0.00005 --dropouts 0.02
 ```
+
+## Disclaimer
+
+The audio samples used in this project are for demonstration purposes only. All music ownership, copyright, and rights belong to their respective artists, songwriters, and record labels. No copyright infringement is intended, and no claim of ownership is made over these materials.
+
